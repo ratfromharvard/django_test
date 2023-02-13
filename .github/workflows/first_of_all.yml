@@ -1,0 +1,176 @@
+require 'json'
+require 'sinatra'
+require 'stripe'
+
+# Первое
+# Второе
+Stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+
+post '/create-checkout-session' do
+  session = Stripe::Checkout::Session.create({
+    line_items: [{
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: 'T-shirt',
+        },
+        unit_amount: 2000,
+      },
+      quantity: 1,
+    }],
+    mode: 'payment',
+    # ЮРЛ в следующем
+    success_url: 'https://example.com/success', 
+    cancel_url: 'https://example.com/cancel',
+  })
+
+  redirect session.url, 303
+end
+
+# Модель Дискаунт / Модель Ордер
+
+  POST 
+/v1/payment_intents
+   GET 
+/v1/payment_intents/:id
+  POST 
+/v1/payment_intents/:id
+  POST 
+/v1/payment_intents/:id/confirm
+  POST 
+/v1/payment_intents/:id/capture
+  POST 
+/v1/payment_intents/:id/cancel
+   GET 
+/v1/payment_intents
+  POST 
+/v1/payment_intents/:id/increment_authorization
+   GET 
+/v1/payment_intents/search
+  POST 
+/v1/payment_intents/:id/verify_microdeposits
+  POST 
+/v1/payment_intents/:id/apply_customer_balance
+
+
+GET /buy/{id},
+
+<html>
+  <head><title>Thanks for your order!</title></head>
+  <body>
+    <h1>Thanks for your order!</h1>
+    <p>
+      We appreciate your business!
+      If you have any questions, please email
+      <a href="mailto:orders@example.com">orders@example.com</a>.
+    </p>
+  </body>
+</html>
+
+curl https://api.stripe.com/v1/checkout/sessions \
+  -u sk_test_4eC39HqLyjWDarjtT1zdp7dc: \
+  -d "line_items[0][price_data][currency]"=usd \
+  -d "line_items[0][price_data][product_data][name]"=T-shirt \
+  -d "line_items[0][price_data][unit_amount]"=2000 \
+  -d "line_items[0][quantity]"=1 \
+  -d mode=payment \
+  -d success_url="http://localhost:4242/success.html" \
+  -d cancel_url="http://localhost:4242/cancel.html"
+
+GET /item/{id}
+
+$ stripe products create --name "Red T-shirt" --data default-price-data[unit_amount]=1099 --data default-price-data[currency]=usd
+{
+"id"
+: 
+"xxxxxx"
+,
+"object"
+: 
+"product"
+,
+"active"
+: 
+true
+,
+"attributes"
+: 
+[]
+,
+"created"
+: 
+1676223794
+,
+"default_price"
+: 
+"xxxxxx"
+,
+"description"
+: 
+null
+,
+"identifiers"
+: 
+{}
+,
+"images"
+: 
+[]
+,
+"livemode"
+: 
+false
+,
+"metadata"
+: 
+{}
+,
+"name"
+: 
+"Red T-shirt"
+,
+"package_dimensions"
+: 
+null
+,
+"price"
+: 
+"xxxxxx"
+,
+"product_class"
+: 
+null
+,
+"shippable"
+: 
+null
+,
+"sku"
+: 
+"red-t-shirt-1"
+,
+"statement_descriptor"
+: 
+null
+,
+"tax_code"
+: 
+null
+,
+"type"
+: 
+"service"
+,
+"unit_label"
+: 
+null
+,
+"updated"
+: 
+1676223794
+,
+"url"
+: 
+null
+,
+}
